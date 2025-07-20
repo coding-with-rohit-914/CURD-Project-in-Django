@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% include 'cdnlines.html' %}
+    <title></title>
+    <style media="screen">
+      input{
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="offset-md-4 col-md-4">
+          <h4 class="text-center">Please Enter Your Data Here!</h4>
+          <form class="" action="{% url 'updated_data' row.id%}" method="post">
+            {% csrf_token %}
+            <input type="text" name="fname" class="from-control" placeholder="First Name:" value="{{ row.first_name }}">
+            <input type="text" name="lname" class="from-control" placeholder="Last Name:" value="{{ row.last_name }}">
+            <input type="text" name="cource" class="from-control" placeholder="Cource Name:" value="{{ row.cource }}">
+            <input type="number" name="fee" class="from-control" placeholder="Fee:" value="{{ row.fee }}">
+            <input type="text" name="iname" class="from-control" placeholder="Intitute Name:" value="{{ row.iname }}">
+            <input type="number" name="mobile" class="from-control" placeholder="Mobile Number:" value="{{ row.mobile }}">
+            <input type="email" name="email" class="from-control" placeholder="Email ID:" value="{{ row.email }}">
+            <input type="number" name="a1" class="from-control" placeholder="Assignment1:" value="{{ row.a1 }}">
+            <input type="number" name="a2" class="from-control" placeholder="Assignment2:" value="{{ row.a2 }}">
+            <input type="number" name="a3" class="from-control" placeholder="Assignment3:" value="{{ row.a3 }}">
+            <input type="number" name="a4" class="from-control" placeholder="Assignment4:" value="{{ row.a4 }}">
+            <input type="text" name="loc" class="from-control" placeholder="Location:" value="{{ row.loc }}">
+          <div class="text-center">
+            <input type="submit" class="btn btn-outline-success" value="Update">
+            <input type="reset" class="btn btn-outline-danger" value="Cancel">
+            <br>
+            <a href="{% url 'indexPage' %}" class="btn btn-primary mt-2">GoTo Main Page</a>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

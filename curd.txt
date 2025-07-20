@@ -1,0 +1,229 @@
+'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
+STATIC_URL = 'static/'
+------------------------------------------------------------------------------------------------------------
+from curdapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.indexPage),
+    path('indexPage', views.indexPage, name='indexPage'),
+    path('add_student', views.add_student, name='add_student'),
+    path('update_student/<id>', views.update_student, name='update_student'),
+    path('updated_data/<id>', views.updated_data, name='updated_data'),
+    path('delete_student/<id>', views.delete_student, name='delete_student')
+]
+------------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% include 'cdnlines.html' %}
+    <title>Add Student</title>
+  <style media="screen">
+    input{
+      margin-top:10px;
+    }
+  </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="offset-md-4 col-md-4">
+          <h4 class="text-center">Please Enter Your Data Here!</h4>
+            <form method="post">
+               {% csrf_token %}
+              <input type="text" name="fname" class="from-control" placeholder="First Name:">
+              <input type="text" name="lname" class="from-control" placeholder="Last Name:">
+              <input type="text" name="cname" class="from-control" placeholder="cource Name:">
+              <input type="number" name="fee" class="from-control" placeholder="Fee:">
+              <input type="text" name="iname" class="from-control" placeholder="Institute Name:">
+              <input type="number" name="mobile" class="from-control" placeholder="Mobile Number:">
+              <input type="email" name="email" class="from-control" placeholder="Email ID:">
+              <input type="number" name="a1" class="from-control" placeholder="Assignment 1:">
+              <input type="number" name="a2" class="from-control" placeholder="Assignment 2:">
+              <input type="number" name="a3" class="from-control" placeholder="Assignment 3:">
+              <input type="number" name="a4" class="from-control" placeholder="Assignment 4:">
+              <input type="text" name="loc" class="from-control" placeholder="Location:">
+
+              <div class="text-center">
+                <input type="submit" value="Add" class="btn btn-outline-success">
+                <input type="reset" value="Cansel" class="btn btn-outline-danger">
+                <br>
+                <a href="{% url 'indexPage' %}" class="btn btn-secondary mt-1">GoTo Main Page</a>
+              </div>
+
+            </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+===========================================================================================================
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+===========================================================================================================
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include 'cdnlines.html' %}
+    <title>Main Page</title>
+</head>
+<body>
+  <div class="container-fluid ">
+      <h1 class="text-center">Welcome To NTH CURD Operations</h1>
+
+      <div class="text-right">
+            <a href="{% url 'add_student' %}" class="btn btn-primary">Add New Student</a>
+      </div>
+            {% if data %}
+            <table class="table mt-1 table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Cource</th>
+                  <th>fee</th>
+                  <th>IName</th>
+                  <th>Mobile</th>
+                  <th>Email</th>
+                  <th>Location</th>
+                  <th>Operations</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in data %}
+                <tr class="text-center">
+                  <td>{{ i.first_name }}</td>
+                  <td>{{ i.last_name }}</td>
+                  <td>{{ i.cource }}</td>
+                  <td>{{ i.fee }}</td>
+                  <td>{{ i.iname }}</td>
+                  <td>{{ i.mobile }}</td>
+                  <td>{{ i.email }}</td>
+                  <td>{{ i.loc }}</td>
+                  <td>
+                  <a href="{% url 'update_student' i.id %}" class="btn btn-sm btn-success">Update</a>
+                  <a href="{% url 'delete_student' i.id %}" class="btn btn-sm btn-danger">Delete</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <h2 class="text-center">No Student Data Available!</h2>
+            {% endif %}
+  </div>
+</body>
+</html>
+
+===========================================================================================================
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% include 'cdnlines.html' %}
+    <title>Update</title>
+    <style media="screen">
+      input{
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="offset-md-4 col-md-4">
+          <h4 class="text-center">Please Enter Your Data Here!</h4>
+          <form class="" action="{% url 'updated_data' row.id%}" method="post">
+            {% csrf_token %}
+            <input type="text" name="fname" class="from-control" placeholder="First Name:" value="{{ row.first_name }}">
+            <input type="text" name="lname" class="from-control" placeholder="Last Name:" value="{{ row.last_name }}">
+            <input type="text" name="cource" class="from-control" placeholder="Cource Name:" value="{{ row.cource }}">
+            <input type="number" name="fee" class="from-control" placeholder="Fee:" value="{{ row.fee }}">
+            <input type="text" name="iname" class="from-control" placeholder="Intitute Name:" value="{{ row.iname }}">
+            <input type="number" name="mobile" class="from-control" placeholder="Mobile Number:" value="{{ row.mobile }}">
+            <input type="email" name="email" class="from-control" placeholder="Email ID:" value="{{ row.email }}">
+            <input type="text" name="loc" class="from-control" placeholder="Location:" value="{{ row.loc }}">
+          <div class="text-center">
+            <input type="submit" class="btn btn-outline-success" value="Update">
+            <input type="reset" class="btn btn-outline-danger" value="Cancel">
+            <br>
+            <a href="{% url 'indexPage' %}" class="btn btn-primary mt-2">GoTo Main Page</a>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+------------------------------------------------------------------------------------------------------------
+class StudentData(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    cource = models.CharField(max_length=30)
+    fee = models.IntegerField()
+    iname = models.CharField(max_length=30)
+    mobile = models.BigIntegerField()
+    email = models.EmailField(max_length=50)
+    loc = models.CharField(max_length=30)
+
+------------------------------------------------------------------------------------------------------------
+
+from django.shortcuts import render, redirect
+from .models import StudentData
+
+def indexPage(request):
+    data = StudentData.objects.all()
+    return render(request, 'indexPage.html',{'data':data})
+
+
+def add_student(request):
+    if request.method == 'GET':
+        return render(request, 'add_student.html')
+    else:
+        StudentData(
+        first_name = request.POST.get('fname'),
+        last_name = request.POST.get('lname'),
+        cource = request.POST.get('cname'),
+        fee = request.POST.get('fee'),
+        iname = request.POST.get('iname'),
+        mobile = request.POST.get('mobile'),
+        email = request.POST.get('email'),
+        loc = request.POST.get('loc')
+        ).save()
+        return redirect('indexPage')
+
+def update_student(request, id):
+    row = StudentData.objects.get(id=id)
+    return render(request, 'update_student.html', {'row':row})
+
+def updated_data(request, id):
+    data = StudentData.objects.get(id=id)
+    data.first_name = request.POST.get('fname')
+    data.last_name = request.POST.get('lname')
+    data.Cource = request.POST.get('cname')
+    data.fee = request.POST.get('fee')
+    data.iname = request.POST.get('iname')
+    data.mobile = request.POST.get('mobile')
+    data.email = request.POST.get('email')
+    data.loc = request.POST.get('loc')
+    data.save()
+    return redirect('indexPage')
+
+
+def delete_student(request, id):
+    data = StudentData.objects.get(id=id)
+    data.delete()
+    return redirect('indexPage')
+
+------------------------------------------------------------------------------------------------------------
